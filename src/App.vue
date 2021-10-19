@@ -24,14 +24,14 @@
     <div class="tabBar">
       <van-tabbar v-model="active"  active-color="#42b983">
         <van-tabbar-item   >
-          <router-link to="/">锻炼技巧</router-link>
+          <router-link to="/">术前康复</router-link>
           <van-icon
                   slot="icon"
                   :name="active == 0 ? icon.active : icon.normal"
           />
         </van-tabbar-item>
         <van-tabbar-item  icon="like" >
-          <router-link to="/about">康复知识</router-link>
+          <router-link to="/about">术后康复</router-link>
           <van-icon
                   slot="icon"
                   :name="active == 1 ? icon1.active : icon1.normal"
