@@ -5,46 +5,37 @@
               border
               fixed
       >
-        <van-icon name="flower-o" slot="title" ><span style="color: black;font-weight: bold;">健康手册</span></van-icon>
+        <van-icon name="invition" slot="title" ><span style="font-size:22px;font-weight: bold;">{{navTitle}}</span></van-icon>
       </van-nav-bar>
-<!--      <van-nav-bar-->
-<!--              title="健康手册"-->
-<!--              left-arrow-->
-<!--              @click-left="onClickLeft"-->
-<!--      />-->
-    </div>
-    <div class="notice">
-      <van-notice-bar  style="width: 100%" mode="closeable">
-        健康的音符，随风花雨，飘进你心里，平安的旋律，如花烂漫，闪亮在你眼里，祝你早日康复，回到幸福生活里。
-      </van-notice-bar>
     </div>
     <div class="content">
       <router-view/>
     </div>
+    <div style="position: fixed;bottom: 40px;width: 100%">
+      <van-notice-bar   mode="closeable">
+        {{text}}
+      </van-notice-bar>
+    </div>
     <div class="tabBar">
-      <van-tabbar v-model="active"  active-color="#42b983">
-        <van-tabbar-item   >
-          <router-link to="/">术前康复</router-link>
-          <van-icon
-                  slot="icon"
-                  :name="active == 0 ? icon.active : icon.normal"
-          />
+      <van-tabbar v-model="active"  active-color="#4fb517" >
+        <van-tabbar-item  @click="$router.push(`/home`)" >术前康复
+          <van-icon slot="icon" :name="active == 0 ? icon.active : icon.normal"/>
         </van-tabbar-item>
-        <van-tabbar-item  icon="like" >
-          <router-link to="/about">术后康复</router-link>
-          <van-icon
-                  slot="icon"
-                  :name="active == 1 ? icon1.active : icon1.normal"
-          />
+        <van-tabbar-item  icon="like"  @click="$router.push(`/about`)">
+          术后康复
+          <van-icon slot="icon" :name="active == 1 ? icon1.active : icon1.normal"/>
         </van-tabbar-item>
       </van-tabbar>
     </div>
   </div>
 </template>
 <script>
+  import bus from '@/utils/bus'
   export default {
     data() {
       return {
+        text:"健康的音符，随风花雨，飘进你心里，平安的旋律，如花烂漫，闪亮在你眼里，祝你早日康复，回到幸福生活里。",
+        navTitle:"术前康复",
         icon: {
           normal: 'fire-o',
           active: 'fire'
@@ -56,30 +47,45 @@
         active: 0
       }
     },
-    methods: {
-
-    }
+   created() {
+     bus.$on('message', (e) => {
+       // console.log(e)
+       this.navTitle = e
+     })
+   }
   }
 </script>
 
 <style>
+  #app {
+    height: 50px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
   /*顶部*/
   .nav{
+    position: relative;
     height: 40px;
     width: 100%;
   }
   /*内容部分*/
   .content {
+    box-sizing: border-box;
     position: absolute;
     top: 40px;
     padding: 10px;
+    padding-bottom: 40px;
     /*border: 1px solid red;*/
+    overflow-x: scroll;
+    overflow-y: hidden;
+    /*解决ios上滑动不流畅*/
+    -webkit-overflow-scrolling: touch;
+    /*纵向超出部分将会隐藏，即滚动条部分被挤出可视区域*/
+    /*padding-bottom: 1px;*/
   }
-  .notice{
-    width: 90%;
-    position: fixed;
-    top: 40px;
-    z-index: 99;
+  .content::-webkit-scrollbar{
+    display: none;
   }
   .tabBar a{
     text-decoration:none;
